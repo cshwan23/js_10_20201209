@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8">
+	<title></title>
+	<script type="text/javascript">
+		
+		function Sungjuk(stu_no, kor, eng, mat){
+
+			this.stu_no = stu_no;
+			this.kor = kor;
+			this.eng = eng;
+			this.mat = mat;
+
+
+			this.getStu_no = function(){
+				return this.stu_no;
+			}
+
+			this.getTot = function(){
+				var tot = this.kor + this.eng + this.mat;
+				return tot;
+			}
+
+			this.getAvg = function(){
+				var avg = Math.ceil(this.getTot()/3);
+				return avg;
+			}
+
+			this.getHakjum = function(){
+				var hakjum = "F";
+				var avg = this.getAvg();
+				if(avg>=90&&avg<=100){
+					hakjum = "A";
+				}else if(avg>=80&&avg<90){
+					hakjum = "B";
+				}else if(avg>=70&&avg<80){
+					hakjum = "C";
+				}else if(avg>=60&&avg<70){
+					hakjum = "D";
+				}
+				return hakjum;
+			}
+
+		}
+
+	</script>
+
+
+</head>
+<body>
+	<script type="text/javascript">
+		
+		var sungjuk1 = new Sungjuk(1,90,80,88);
+
+	
+		document.write(sungjuk1.getStu_no()+"<br>");
+		document.write(sungjuk1.getTot()+"<br>");
+		document.write(sungjuk1.getAvg()+"<br>");
+		document.write(sungjuk1.getHakjum()+"<br>");
+
+		var sungjuk2 = new Sungjuk(2,96,83,18);
+		var sungjuk3 = new Sungjuk(3,93,32,38);
+		var sungjuk4 = new Sungjuk(4,86,27,75);
+
+		var sungjukArr = [];
+
+		sungjukArr.push(sungjuk1);
+		sungjukArr.push(sungjuk2);
+		sungjukArr.push(sungjuk3);
+		sungjukArr.push(sungjuk4);
+
+		//200명 추가해보자
+		for(var i=0; i<200; i++){
+
+			var kor_tmp = Math.ceil(Math.random()*100);
+			var eng_tmp = Math.ceil(Math.random()*100);
+			var mat_tmp = Math.ceil(Math.random()*100);
+		
+			sungjukArr.push(new Sungjuk(
+				sungjukArr.length+1
+				,kor_tmp
+				,eng_tmp
+				,eng_tmp
+				)
+			);
+		}
+
+		//평균 순으로 정렬해보자.
+		for(var i = 0; i<sungjukArr.length-1;i++){
+
+			
+			for(var j=i+1; j<sungjukArr.length;j++){
+
+					if(i==j){continue;};
+					var avg1 = sungjukArr[i].getAvg();
+					var kor1 = sungjukArr[i].kor;
+					var eng1 = sungjukArr[i].eng;
+					var mat1 = sungjukArr[i].mat;
+
+
+					var avg2 = sungjukArr[j].getAvg();
+					var kor2 = sungjukArr[j].kor;
+					var eng2 = sungjukArr[j].eng;
+					var mat2 = sungjukArr[j].mat;
+
+					var flag = false;
+					if (avg1<avg2){
+
+						flag = true;
+						
+					}else if(avg1==avg2){
+
+						if(kor1<kor2){
+							flag = true;
+						}else if(kor1==kor2&&eng1<eng2){
+							flag =true;
+						}else if(kor1==kor2&&eng1==eng2&&mat1<mat2){
+							flag=true;
+						}
+					}
+
+
+					if(flag==true){
+						var tmp = sungjukArr[i];
+						sungjukArr[i] = sungjukArr[j];
+						sungjukArr[j] = tmp;
+					}
+			}
+
+		}
+
+		var tot_avg = 0;
+
+		for(var i = 0; i<sungjukArr.length; i++){
+			tot_avg = tot_avg + sungjukArr[i].getAvg();
+		}
+		var tot_avg_avg = Math.ceil(tot_avg/sungjukArr.length);
+
+
+		document.write("<table border=1 cellspacing=0 cellpadding=5>");
+		document.write("<caption>학생성적( 총 " +sungjukArr.length +"명 / 전체평균"+tot_avg_avg+ "점 ) </caption>");
+		document.write("<tr>");
+		document.write("<th>등수<th>학번<th>국어<th>영어<th>수학<th>총점<th>평균<th>전체평균보다");
+		
+		
+		for(var i=0; i<sungjukArr.length; i++){
+			
+			var rank = 0;
+			for(var j=0; j<sungjukArr.length;j++){
+
+				if(i==j){continue;};
+				var avg1 = sungjukArr[i].getAvg();
+				var kor1 = sungjukArr[i].kor;
+				var eng1 = sungjukArr[i].eng;
+				var mat1 = sungjukArr[i].mat;
+
+				var avg2 = sungjukArr[j].getAvg();
+				var kor2 = sungjukArr[j].kor;
+				var eng2 = sungjukArr[j].eng;
+				var mat2 = sungjukArr[j].mat;
+
+				if(avg1<avg2){
+					rank++;
+
+				}else if(avg1==avg2){
+
+					if(kor1<kor2){
+						rank++;
+					}
+					if(kor1==kor2&&eng1<eng2){
+						rank++;
+					}
+					if(kor1==kor2&&eng1==eng2&&mat1<mat2){
+						rank++;
+					}
+				}		
+			}
+
+			var bgcolor = "white";
+			if(avg1>=90){
+				bgcolor = "pink";
+			}else if(avg1>=80){
+				bgcolor = "lightblue";
+			}else if(avg1>=70){
+				bgcolor = "lightyellow";
+			}else if(avg1>=60){
+				bgcolor = "lightgreen";
+			}
+
+
+			var gap_avg = sungjukArr[i].getAvg() - tot_avg_avg;
+			if (gap_avg>0){
+				gap_avg = "+"+gap_avg;
+			}
+
+			document.write("<tr bgcolor='"+bgcolor+"'>");
+			document.write("<th>"+(rank+1));
+			document.write("<td>"+sungjukArr[i].getStu_no());
+			document.write("<td>"+sungjukArr[i].kor);
+			document.write("<td>"+sungjukArr[i].eng);
+			document.write("<td>"+sungjukArr[i].mat);
+			document.write("<td>"+sungjukArr[i].getTot());
+			document.write("<td>"+sungjukArr[i].getAvg());
+			document.write("<td>"+gap_avg);
+		}
+
+
+		document.write("</table>");
+	</script>
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

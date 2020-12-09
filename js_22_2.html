@@ -1,0 +1,124 @@
+<!-- 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+js_22_2.html
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+새로운 방법
+굳이 안해도 된다.
+ -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8">
+	<title></title>
+	<script type="text/javascript">
+
+		//*****************************
+		//Sungjuk 이라는 이름의 [생성자 함수] 선언
+		//*****************************
+		function Sungjuk(stu_no, kor, eng, mat){
+			//------------------
+			// 속성변수 선언 
+			//------------------
+			this.stu_no = stu_no;
+            this.kor = kor;
+            this.eng = eng;
+            this.mat = mat;
+
+            this.getStu_no = function(){
+           
+                return this.stu_no;
+            }
+            
+            this.getTot = function(){
+                
+                var tot = this.kor + this.eng + this.mat;
+                
+                return tot;
+            }
+            
+            this.getAvg = function(){
+            	
+            	var avg = this.getTot()/3;
+            	 
+            	return avg;
+            }
+            
+            this.getHakjum = function(){
+
+            	var hakjum = "F";
+
+            	var avg = this.getAvg();
+
+            	if (avg>=90 && avg <=100){
+            		hakjum = "A";
+
+            	}else if (avg>=80 && avg <90){
+            		hakjum = "B";
+
+            	}else if (avg>=70 && avg <80){
+            		hakjum = "C";
+
+            	}else if (avg>=60 && avg <70){
+            		hakjum = "D";
+
+            	}
+
+            	return hakjum;
+            }
+
+		}
+
+	</script>
+</head>
+<body>
+	<script type="text/javascript">
+
+
+	    for(var i = 0; i<=200; i++){
+
+	    	var kor_tmp = Math.ceil(Math.random()*100);
+	    	var eng_tmp = Math.ceil(Math.random()*100);
+	    	var mat_tmp = Math.ceil(Math.random()*100);
+	    	
+	    	sungjukArr.push( new Sungjuk (sungjukArr.length+1, kor_tmp, eng_tmp, mat_tmp) );
+	    }
+
+	    for(var i = 0; i<sungjukArr.length-1; i++){
+	    	for(var j=i+1; j<sungjukArr.length; j++){
+	    		
+	    		var avg1 = sungjukArr[i].getAvg();
+	    		var kor1 = sungjukArr[i].kor;
+		    	var eng1 = sungjukArr[i].eng;
+		    	var mat1 = sungjukArr[i].mat;
+	    	
+
+	    		var avg2 = sungjukArr[j].getAvg();
+	    		var kor2 = sungjukArr[j].kor;
+		    	var eng2 = sungjukArr[j].eng;
+		    	var mat2 = sungjukArr[j].mat;
+
+		    	var str1 = "1" + (kor1<10?"00":"") + (kor1>=10&&kor1<100?"0":"") + kor1
+		    				   + (eng1<10?"00":"") + (eng1>=10&&eng1<100?"0":"") + eng1
+		    				   + (mat1<10?"00":"") + (mat1>=10&&mat1<100?"0":"") + mat1
+		    	var str2 = "1" + (kor2<10?"00":"") + (kor2>=10&&kor2<100?"0":"") + kor2
+		    				   + (eng2<10?"00":"") + (eng2>=10&&eng2<100?"0":"") + eng2
+		    				   + (mat2<10?"00":"") + (mat2>=10&&mat2<100?"0":"") + mat2
+
+		    	if(str<str2){
+		    		var tmp = sungjukArr[i];
+		    		sungjukArr[i] = sungjukArr[j];
+		    		sungjukArr[j] = tmp;
+		    	}
+		    	if(avg1==avg2 && str1<str2){
+		    		var tmp = sungjukArr[i];
+		    		sungjukArr[i] = sungjukArr[j];
+		    		sungjukArr[j] = tmp;
+		    	}
+		    
+		    }
+		}
+
+
+	</script>
+
+</body>
+</html>
